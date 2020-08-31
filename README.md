@@ -1,2 +1,2 @@
-# GoSecureEdrElk
-Parsing and dashboards for GoSecure EDR
+# Shuffle configs 
+Support for GoSecure EDR and other tools
