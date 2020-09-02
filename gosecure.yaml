@@ -114,7 +114,7 @@ info:
   version: 1.0.0
 openapi: 3.0.2
 servers:
-  - url: "https://{edr_ip}:9090"
+  - url: ""
 paths:
   /api/v2/behaviors:
     get:
