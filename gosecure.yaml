@@ -1,0 +1,2116 @@
+components:
+  schemas:
+    Commands:
+      type: object
+      properties:
+        type:
+          type: string
+        paths:
+          type: array
+    Tags:
+      type: object
+      properties:
+        tag:
+          type: string
+    Groups:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        expression:
+          type: string
+        parent:
+          type: string
+    Library:
+      type: object
+      properties:
+        type:
+          type: string
+        xml_string:
+          type: string
+    SavedSearch:
+      type: object
+      properties:
+        expression:
+          type: string
+        domain:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        meta:
+          type: string
+    Hash:
+      type: object
+      properties:
+        type:
+          type: string
+        description:
+          type: string
+        impact:
+          type: string
+        label:
+          type: string
+    IP:
+      type: object
+      properties:
+        ip:
+          $ref: '#/components/schemas/IP2'
+    IP2:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        description:
+          type: string
+        impact:
+          type: string
+        label:
+          type: string
+    Tenant:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+    Tenants:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    User:
+      type: object
+      properties:
+        tenants:
+          type: string
+        roles:
+          type: string
+        is_enabled:
+          type: string
+        has_global_tenancy:
+          type: string
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apikey
+info:
+  contact:
+    email: towen@gosecure.net
+    name: '@owentl'
+    url: https://medium.com/@owentl
+  description: 'GoSecure EDR API generated from the GoSecure EDR API Document'
+  title: GoSecure EDR
+  version: 1.0.0
+openapi: 3.0.2
+servers:
+  - url: "https://{edr_ip}:9090"
+paths:
+  /api/v2/behaviors:
+    get:
+      summary: Retrieve informtion on a collection of behaviors
+      parameters:
+      - description: 'expression'
+        in: query
+        name: expression
+        required: false
+        schema:
+          type: string
+      - description: fields
+        in: query
+        name: fields
+        required: false
+        schema:
+          type: string
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Get the behaviors
+  /api/v2/behaviors/{id}:
+    get:
+      summary: Retrieve behaviors for specific endpoints
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Fields to return
+        in: query
+        name: fields
+        required: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: Get the behaviors for specific endpoint
+  /api/v2/behavior/tags:
+    get:
+      summary: Retrieve tags from behaviors
+      parameters:
+      - description: expression
+        in: query
+        name: expression
+        required: false
+        schema:
+          type: string
+      - description: return tags that start with this case-sensitive prefix
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Get the events
+    post:
+      summary: Add tags to behaviors
+      parameters:
+      - name: param1
+        in: body
+        required: true
+        description: tags to set on endpoint
+        schema:
+            $ref: '#/components/schemas/Tags'
+      - description: CQL expression to filter
+        in: query
+        name: expression
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Tag modified
+    put:
+      summary: Replace tags on behaviors
+      parameters:
+      - name: param1
+        in: body
+        required: true
+        description: tags to set on endpoint
+        schema:
+            $ref: '#/components/schemas/Tags'
+      - description: CQL expression to filter
+        in: query
+        name: expression
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Tag modified
+    delete:
+      summary: Remove tags from behaviors
+      parameters:
+      - name: param1
+        in: body
+        required: true
+        description: tags to set on endpoint
+        schema:
+            $ref: '#/components/schemas/Tags'
+      - description: CQL expression to filter
+        in: query
+        name: expression
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Tag Removed
+  /api/v2/behavior/{id}/tags:
+    get:
+      summary: Retrieve tags from behaviors on an endpoint
+      parameters:
+      - description: id of the behavior
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Fields to return
+        in: query
+        name: fields
+        required: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: Get the tags for a specific behavior
+    post:
+      summary: Add tags from behaviors on an endpoint
+      parameters:
+      - name: param1
+        in: body
+        required: true
+        description: tags to set on endpoint
+        schema:
+            $ref: '#/components/schemas/Tags'
+        - description: id of the behavior
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Tag modified
+    put:
+      summary: Set tags from behaviors on an endpoint
+      parameters:
+      - name: param1
+        in: body
+        required: true
+        description: tags to set on endpoint
+        schema:
+            $ref: '#/components/schemas/Tags'
+        - description: id of the behavior
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+    delete:
+      summary: Remove tags from behaviors on an endpoint
+      parameters:
+      - name: param1
+        in: body
+        required: true
+        description: tags to set on endpoint
+        schema:
+            $ref: '#/components/schemas/Tags'
+      - name: id
+        description: id of the behavior
+        in: path
+        required: true
+        schema:
+          type: string
+  /api/v2/endpoints:
+    get:
+      summary: Get list of endpoints
+      parameters:
+      - description: 'expression'
+        in: query
+        name: expression
+        required: false
+        schema:
+          type: string
+      - description: fields
+        in: query
+        name: fields
+        required: false
+        schema:
+          type: string
+      - description: limit
+        in: query
+        name: limit
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Get the events
+  /api/v2/endpoints/{id}:
+    get:
+      summary: Get Details of endpoint
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: 'Fields'
+        in: query
+        name: fields
+        required: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: Get the endpoint
+  /api/v2/endpoints/commands:
+    get:
+      summary: Return commands for all endpoints
+      parameters:
+      - description: 'Fields'
+        in: query
+        name: fields
+        required: false
+        schema:
+          type: string
+      - description: CQL expression to filter
+        in: query
+        name: expression
+        required: true
+        schema:
+          type: string
+      - description: max number of results
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: Get the commands
+    post:
+      summary: Send commands to multiple endpoints
+      parameters:
+        - description: CQL expression to filter
+          in: query
+          name: expression
+          required: true
+          schema:
+            type: string
+        - description: Command and path
+          in: body
+          name: body
+          example: '{"type": "extract_files", "paths": "["C:\\Windows\\System32\\taskhost.exe"]"}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Commands'
+                required:
+                  - type
+                  - paths
+  /api/v2/endpoints/{id}/commands:
+    get:
+      summary: Get commands for an endpoint
+      parameters:
+      - name: id
+        in: path
+        description: ID of endpoint to use
+        required: false
+        schema:
+          type: string
+      - description: 'Fields'
+        in: query
+        name: fields
+        required: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: Get the commands for an endpoint
+  /api/v2/endpoints/commands/{id}:
+    get:
+      summary: Look for a specific command on an endpoint
+      parameters:
+      - name: id
+        in: path
+        description: ID of command to use
+        required: false
+        schema:
+          type: string
+      - description: Fields
+        in: query
+        name: fields
+        required: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: Check if command is on the endpoint
+    post:
+      summary: Send a command to an endpoint
+      parameters:
+      - name: id
+        in: path
+        description: ID of endpoint to use
+        required: false
+        schema:
+          type: string
+      - description: Command and path
+        in: body
+        name: body
+        example: '{"type": "extract_files", "paths": "["C:\\Windows\\System32\\taskhost.exe"]"}'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Commands'
+              required:
+                - type
+                - paths
+      responses:
+        200:
+          description: Command sent
+  /api/v2/endpoints/files:
+    get:
+      summary: Get all extracted files for all endpoints on the cluster
+      parameters:
+      - name: limit
+        in: query
+        description: Limit of files to retrieve
+        required: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: Get the files
+  /api/v2/endpoints/{id}/files:
+    get:
+      summary: Get all files from an endpoint
+      parameters:
+      - name: id
+        in: path
+        description: ID of endpoint to use
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Limit of files to retrieve
+        required: false
+        schema:
+          type: string
+      - name: fields
+        in: query
+        description: Comma seperated list of fields that will be returned
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Get the files
+  /api/v2/endpoints/files/{id}:
+    get:
+      summary: Retrieve files from an endpoint
+      parameters:
+      - name: id
+        in: path
+        description: ID of endpoint to retrieve
+        required: true
+        schema:
+          type: string
+      - name: fields
+        in: query
+        description: Comma seperated list of fields that will be returned
+        required: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: Files Retrieved
+    delete:
+      summary: Delete a file off an endpoint
+      - name: id
+        in: path
+        description: ID of file to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: File deleted
+  /api/v2/downloads/extractedfiles/{id}:
+    get:
+      summary: Download extracted files from an endpoint
+      parameters:
+      - name: id
+        in: path
+        description: ID of file to download
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Get the files
+  /api/v2/endpoints/tags:
+    get:
+      summary: Retrieve tags for a collection of endpoints
+      parameters:
+      - description: Return tags that start with this case-sensitive prefix
+        in: query
+        name: q
+        required: false
+        schema:
+          type: string
+      - description: CQL expression to filter
+        in: query
+        name: expression
+        required: true
+        schema:
+          type: string
+      - description: max number of results
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: Get the tags
+    put:
+      summary: Modify tags for a collection of endpoints
+      parameters:
+      - name: param1
+        in: body
+        required: true
+        description: tags to set on endpoint
+        schema:
+            $ref: '#/components/schemas/Tags'
+      - description: CQL expression to filter
+        in: query
+        name: expression
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Tag modified
+    post:
+      summary: Add tags for a collection of endpoints
+      parameters:
+      - name: param1
+        in: body
+        required: true
+        description: tags to set on endpoint
+        schema:
+            $ref: '#/components/schemas/Tags'
+      - description: CQL expression to filter
+        in: query
+        name: expression
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Tag added
+    delete:
+      summary: Remove tags for a collection of endpoints
+      parameters:
+      - name: param1
+        in: body
+        required: true
+        description: tags to set on endpoint
+        schema:
+            $ref: '#/components/schemas/Tags'
+      - description: CQL expression to filter
+        in: query
+        name: expression
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Tag removed
+  /api/v2/endpoints/{id}/tags:
+    get:
+      summary: Retrieve tags for a specified endpoint
+      parameters:
+      - name: id
+        in: path
+        description: ID of endpoint
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Get the files
+    put:
+      summary: Modify tags for a specified endpoint
+      parameters:
+      - name: id
+        in: path
+        description: ID of file to download
+        required: true
+        schema:
+          type: string
+      - name: param1
+        in: body
+        required: true
+        description: tags to set on endpoint
+        schema:
+            $ref: '#/components/schemas/Tags'
+      responses:
+        200:
+          description: Tag modified on endpoint
+    post:
+      summary: Add tags for a specified endpoint
+      parameters:
+      - name: id
+        in: path
+        description: ID of file to download
+        required: true
+        schema:
+          type: string
+      - name: param1
+        in: body
+        required: true
+        description: tags to set on endpoint
+        schema:
+            $ref: '#/components/schemas/Tags'
+      responses:
+        200:
+          description: Tag added to endpoint
+    delete:
+      summary: Remove tags for a specified endpoint
+      parameters:
+      - name: id
+        in: path
+        description: ID of file to download
+        required: true
+        schema:
+          type: string
+      - name: param1
+        in: body
+        required: true
+        description: tags to set on endpoint
+        schema:
+            $ref: '#/components/schemas/Tags'
+      responses:
+        200:
+          description: Tag removed on endpoint
+  /api/v2/events:
+    get:
+      summary: Receive events based on criteria
+      parameters:
+      - name: id
+        in: path
+        description: ID of event to use
+        required: false
+        schema:
+          type: string
+      - name: expression
+        in: query
+        description: expression
+        required: false
+        schema:
+          type: string
+      - name: fields
+        in: query
+        description: fields
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: limit
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Get the events
+  /api/v2/events/{id}:
+    get:
+      summary: Revieve events based on event id
+      responses:
+        200:
+          description: The alert
+      parameters:
+      - name: id
+        in: path
+        description: ID of event
+        required: true
+      - name: fields
+        description: fields
+        in: query
+        required: false
+        schema:
+          type: string
+  /api/v2/events/tags:
+    get:
+      description: Get the tags sent to events
+      parameters:
+      - name: expression
+        description: 'A CQL search expression that filters on events'
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: limit
+        description: 'The maximum number of tags to return'
+        in: query
+        schema:
+          type: integer
+      - name: q
+        description: 'Return tags beginning with this case-sensitive prefix'
+        in: query
+        schema:
+          type: string
+      responses:
+        200:
+          description: Get tag
+    post:
+      summary: Add tags to a collection of events
+      parameters:
+      - name: expression
+        description: 'A CQL search expression that filters on events'
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: param1
+        in: body
+        required: true
+        description: tags to set on endpoint
+        schema:
+            $ref: '#/components/schemas/Tags'
+      responses:
+        200:
+          description: Add tag
+    put:
+      summary: Set tags for a collection of events
+      parameters:
+      - name: expression
+        description: 'A CQL search expression that filters on events'
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: param1
+        in: body
+        required: true
+        description: tags to set on endpoint
+        schema:
+            $ref: '#/components/schemas/Tags'
+      responses:
+        200:
+          description: replace tag
+    delete:
+    summary: Delete tags for a collection of events
+    parameters:
+    - name: expression
+      description: 'A CQL search expression that filters on events'
+      in: query
+      required: false
+      schema:
+        type: string
+    - name: param1
+      in: body
+      required: true
+      description: tags to set on endpoint
+      schema:
+          $ref: '#/components/schemas/Tags'
+    responses:
+      200:
+        description: Remove tag
+  /api/v2/events/{id}/tags:
+    get:
+      summary: Get the tags for an event
+      parameters:
+      - name: id
+        in: path
+        description: ID of event
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Tag retrieved
+    post:
+      summary: Add tag to specific event
+      parameters:
+        - name: param1
+          in: body
+          required: true
+          description: tags to set on endpoint
+          schema:
+              $ref: '#/components/schemas/Tags'
+        - name: id
+          in: path
+          description: ID of event
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Add tag
+    put:
+      summary: Set tags for a specific event
+      parameters:
+      - name: id
+        in: path
+        description: ID of event
+        required: true
+        schema:
+          type: string
+      - name: param1
+        in: body
+        required: true
+        description: tags to set on endpoint
+        schema:
+            $ref: '#/components/schemas/Tags'
+      responses:
+        200:
+          description: Replace tag
+    delete:
+      summary: Delete the tags for an event
+      parameters:
+      - name: id
+        in: path
+        description: ID of event
+        required: true
+        schema:
+          type: string
+      - name: param1
+        in: body
+        required: true
+        description: tags to set on endpoint
+        schema:
+            $ref: '#/components/schemas/Tags'
+      responses:
+        200:
+          description: Remove tag
+    /api/v2/groups:
+      get:
+        summary: Retrieve Groups
+        parameters:
+        - name: expression
+          in: query
+          description: expression
+          required: false
+          schema:
+            type: string
+        - name: fields
+          in: query
+          description: fields
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: limit
+          schema:
+            type: integer
+        - name: depth
+          in: query
+          description: Number of levels that will be included in the response
+          schema:
+            type: integer
+        responses:
+          200:
+            description: Get the events
+      post:
+        summary: Create new group
+        parameters:
+        - description: Command and path
+          in: body
+          name: body
+          example: '{"type": "manual", "name": "My group name"}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Groups'
+                required:
+                  - name
+                  - type
+                  - expression
+        responses:
+          200:
+            description: Group created
+      delete:
+        summary: Remove groups
+        parameters:
+        - name: expression
+          in: query
+          description: expression
+          required: false
+          schema:
+            type: string
+        responses:
+          200:
+            description: Group removed
+    /api/v2/groups/{id}:
+      get:
+        summary: Retrieve specific group
+        parameters:
+        - name: id
+          in: path
+          description: ID of group
+          required: true
+          schema:
+            type: string
+        - name: fields
+          in: query
+          description: fields
+          required: false
+          schema:
+            type: string
+        - name: depth
+          in: query
+          description: Number of levels that will be included in the response
+          schema:
+            type: integer
+        responses:
+          200:
+            description: Get the events
+      put:
+        summary: Modify a group
+        parameters:
+        - name: id
+          in: path
+          description: ID of group
+          required: true
+          schema:
+            type: string
+        - description: Command and path
+          in: body
+          name: body
+          example: '{"type": "manual", "name": "My group name"}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Groups'
+                required:
+                  - name
+                  - type
+        responses:
+          200:
+            description: Group modified
+      patch:
+        summary: Modify group with partial data
+        parameters:
+        - name: id
+          in: path
+          description: ID of group
+          required: true
+          schema:
+            type: string
+        - description: Command and path
+          in: body
+          name: body
+          example: '{"type": "manual", "name": "My group name"}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Groups'
+                required:
+                  - name
+                  - type
+        responses:
+          200:
+            description: Group modified
+      delete:
+        summary: Remove specific group
+        parameters:
+        - name: id
+          in: path
+          description: ID of group
+          required: true
+          schema:
+            type: string
+        responses:
+          200:
+            description: Group removed
+    /api/v2/groups/{id}/endpoints:
+      get:
+        summary: Retrieve endpoints from specified group
+        parameters:
+        - name: id
+          in: path
+          description: ID of group
+          required: true
+          schema:
+            type: string
+        responses:
+          200:
+            description: endpoints retrieved
+      post:
+        summary: Add endpoints to specified group
+        parameters:
+        - name: id
+          in: path
+          description: ID of group
+          required: true
+          schema:
+            type: string
+        - name: param1
+          in: body
+          required: true
+          description: tags to set on endpoint
+          schema:
+              $ref: '#/components/schemas/Tags'
+        responses:
+          200:
+            description: endpoints added
+      delete:
+        summary: Remove endpoints from specified group
+        parameters:
+        - name: id
+          in: path
+          description: ID of group
+          required: true
+          schema:
+            type: string
+        - name: param1
+          in: body
+          required: true
+          description: tags to set on endpoint
+          schema:
+              $ref: '#/components/schemas/Tags'
+        responses:
+          200:
+            description: endpoints removed
+    /api/v2/groups/endpoints:
+      post:
+        summary: Add endpoints to groups
+        parameters:
+        - name: param1
+          in: body
+          required: true
+          description: tags to set on endpoint
+          schema:
+              $ref: '#/components/schemas/Tags'
+        - name: expression
+          in: query
+          description: expression
+          required: false
+          schema:
+            type: string
+        responses:
+          200:
+            description: endpoint added to group
+      delete:
+        summary: Remove endpoints from Groups
+        parameters:
+        - name: param1
+          in: body
+          required: true
+          description: tags to set on endpoint
+          schema:
+              $ref: '#/components/schemas/Tags'
+        - name: expression
+          in: query
+          description: expression
+          required: false
+          schema:
+            type: string
+        responses:
+          200:
+            description: endpoint removed from group
+    /api/v2/libary:
+      get:
+        summary: Retrieve list of entries in Knowledge library
+        parameters:
+        - name: expression
+          in: query
+          description: expression
+          required: false
+          schema:
+            type: string
+        - name: fields
+          in: query
+          description: fields
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: limit
+          schema:
+            type: integer
+        responses:
+          200:
+            description: library entries retrieved
+    /api/v2/libary/{id}:
+      get:
+        summary: Retrieve specific entries in Knowledge library
+        parameters:
+        - name: id
+          in: path
+          description: ID of group
+          required: true
+          schema:
+            type: string
+        - name: fields
+          in: query
+          description: fields
+          required: false
+          schema:
+            type: string
+        responses:
+          200:
+            description: library entry retrieved
+      put:
+        summary: Modify specific entries in Knowledge library
+        parameters:
+        - name: id
+          in: path
+          description: ID of group
+          required: true
+          schema:
+            type: string
+        - description: Entry to add
+          in: body
+          name: body
+          example: '{"type": "condition", "xml_string": "..."}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Library'
+                required:
+                  - type
+                  - xml_string
+        responses:
+          200:
+            description: library entry updated
+      patch:
+        summary: Modify specific entries in Knowledge library with partial data
+        parameters:
+        - name: id
+          in: path
+          description: ID of group
+          required: true
+          schema:
+            type: string
+        - description: Entry to update
+          in: body
+          name: body
+          example: '{"type": "condition", "xml_string": "..."}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Library'
+                required:
+                  - type
+                  - xml_string
+        responses:
+          200:
+            description: library entry updated
+      delete:
+        summary: Delete entry from Knowledge library
+        parameters:
+        - name: id
+          in: path
+          description: ID of group
+          required: true
+          schema:
+            type: string
+        - description: Entry to update
+          in: body
+          name: body
+          example: '{"type": "condition", "xml_string": "..."}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Library'
+                required:
+                  - type
+                  - xml_string
+        responses:
+          200:
+            description: library entry deleted
+    /api/v2/library/conditions:
+      post:
+        summary: Add conditions to library
+        parameters:
+        - name: locked
+          in: query
+          description: specify if entry is locked
+          required: false
+          schema:
+            type: string
+        - name: visible
+          in: query
+          description: specify if entry is visible
+          required: false
+          schema:
+            type: string
+        - description: entry to add
+          in: body
+          name: body
+          example: '{"type": "condition", "xml_string": "..."}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Library'
+                required:
+                  - type
+                  - xml_string
+        responses:
+          200:
+            description: library entry updated
+    /api/v2/library/profiles:
+      post:
+        summary: Add profile to library
+        parameters:
+        - name: locked
+          in: query
+          description: specify if entry is locked
+          required: false
+          schema:
+            type: string
+        - name: visible
+          in: query
+          description: specify if entry is visible
+          required: false
+          schema:
+            type: string
+        - description: entry to add
+          in: body
+          name: body
+          example: '{"type": "profile", "xml_string": "..."}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Library'
+                required:
+                  - type
+                  - xml_string
+        responses:
+          200:
+            description: library entry added
+    /api/v2/library/scis:
+      post:
+        summary: Add SCI to libary
+        parameters:
+        - name: locked
+          in: query
+          description: specify if entry is locked
+          required: false
+          schema:
+            type: string
+        - name: visible
+          in: query
+          description: specify if entry is visible
+          required: false
+          schema:
+            type: string
+        - description: entry to add
+          in: body
+          name: body
+          example: '{"type": "sci", "xml_string": "..."}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Library'
+                required:
+                  - type
+                  - xml_string
+        responses:
+          200:
+            description: library entry updated
+    /api/v2/searches:
+      get:
+        summary: Retrieve list of saved searches
+        parameters:
+        - name: fields
+          in: query
+          description: fields
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: limit
+          schema:
+            type: integer
+        responses:
+          200:
+            description: saved searches retrieved
+      post:
+        summary: Create a new saved searches
+        parameters:
+        - description: entry to add
+          in: body
+          name: body
+          example: '{"name": "some name", "domain": "endpoints", "description": "some desc", "expression": "endpoints.status=on"}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SavedSearch'
+                required:
+                  - expression
+                  - domain
+                  - name
+        responses:
+          200:
+            description: saved searches retrieved
+    /api/v2/searches/{id}:
+      get:
+        summary: Retrieve specific saved search
+        parameters:
+        - name: id
+          in: path
+          description: ID of group
+          required: true
+          schema:
+            type: string
+        - name: fields
+          in: query
+          description: fields
+          required: false
+          schema:
+            type: string
+        responses:
+          200:
+            description: saved search retrieved
+      put:
+        summary: Overwrite specific saved search
+        parameters:
+        - name: id
+          in: path
+          description: ID of saved search
+          required: true
+          schema:
+            type: string
+        - description: entry to modify
+          in: body
+          name: body
+          example: '{"name": "some name", "domain": "endpoints", "description": "some desc", "expression": "endpoints.status=on"}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SavedSearch'
+                required:
+                  - expression
+                  - domain
+                  - name
+        responses:
+          200:
+            description: saved searches overwritten
+      patch:
+        summary: Modify specific saved search
+        parameters:
+        - name: id
+          in: path
+          description: ID of saved search
+          required: true
+          schema:
+            type: string
+        - description: entry to modify
+          in: body
+          name: body
+          example: '{"name": "some name", "domain": "endpoints", "description": "some desc", "expression": "endpoints.status=on"}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SavedSearch'
+                required:
+                  - expression
+                  - domain
+                  - name
+        responses:
+          200:
+            description: saved searches modified
+      delete:
+        summary: Modify specific saved search
+        parameters:
+        - name: id
+          in: path
+          description: ID of saved search
+          required: true
+          schema:
+            type: string
+        responses:
+          200:
+            description: saved searches removed
+    /api/v2/hashes:
+      get:
+        summary: Retrieve collection of hashes
+        parameters:
+        - name: expression
+          in: query
+          description: expression
+          required: false
+          schema:
+            type: string
+        - name: fields
+          in: query
+          description: fields
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: limit
+          schema:
+            type: integer
+        responses:
+          200:
+            description: hash entries retrieved
+      post:
+        summary: Adds a collection of hashes
+        parameters:
+        - description: entry to modify
+          in: body
+          name: body
+          example: '{"type": "md5", "impact": "30", "description": "some desc", "label": "interesting file"}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hash'
+                required:
+                  - type
+                  - description
+                  - impact
+                  - label
+    /api/v2/hashes/{id}:
+      get:
+        summary: Retrieve specific hash
+        get:
+          summary: Retrieve collection of hashes
+          parameters:
+          - name: id
+            in: path
+            description: ID of saved search
+            required: true
+            schema:
+              type: string
+          - name: fields
+            in: query
+            description: fields
+            required: false
+            schema:
+              type: string
+          responses:
+            200:
+              description: hash entry retrieved
+      post:
+        summary: Create a new hash
+        parameters:
+        - name: id
+          in: path
+          description: ID of saved search
+          required: true
+          schema:
+            type: string
+        - description: entry to modify
+          in: body
+          name: body
+          example: '{"type": "md5", "impact": "30", "description": "some desc", "label": "interesting file"}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hash'
+                required:
+                  - type
+                  - description
+                  - impact
+                  - label
+          responses:
+            200:
+              description: hash entry created
+      put:
+        summary: Modify an existing hash
+        parameters:
+        - name: id
+          in: path
+          description: ID of saved search
+          required: true
+          schema:
+            type: string
+        - description: entry to modify
+          in: body
+          name: body
+          example: '{"type": "md5", "impact": "30", "description": "some desc", "label": "interesting file"}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hash'
+                required:
+                  - type
+                  - description
+                  - impact
+                  - label
+          responses:
+            200:
+              description: hash entry overwritten
+      patch:
+        summary: Modify an existing hash with partial data
+        parameters:
+        - name: id
+          in: path
+          description: ID of saved search
+          required: true
+          schema:
+            type: string
+        - description: entry to modify
+          in: body
+          name: body
+          example: '{"type": "md5", "impact": "30", "description": "some desc", "label": "interesting file"}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hash'
+                required:
+                  - type
+                  - description
+                  - impact
+                  - label
+          responses:
+            200:
+              description: hash entry modified
+      delete:
+        summary: Delete an existing hash
+        - name: id
+          in: path
+          description: ID of saved search
+          required: true
+          schema:
+            type: string
+          responses:
+            200:
+              description: hash entry removed
+    /api/v2/ips:
+      get:
+        summary: Retrieve a collection of IPs
+        parameters:
+        - name: expression
+          in: query
+          description: expression
+          required: false
+          schema:
+            type: string
+        - name: fields
+          in: query
+          description: fields
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: limit
+          schema:
+            type: integer
+        responses:
+          200:
+            description: IP entries retrieved
+      post:
+        summary: Adds a collection of IPs
+        parameters:
+        - description: entry to modify
+          in: body
+          name: body
+          example: '{"type": "md5", "impact": "30", "description": "some desc", "label": "interesting file"}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IP'
+                required:
+                  - type
+                  - description
+                  - impact
+                  - label
+          responses:
+            200:
+              description: hash entry modified
+    /api/v2/ips/{id}:
+      get:
+        summary: Retrieve a specific IP
+        parameters:
+        - name: id
+          in: path
+          description: ID of saved search
+          required: true
+          schema:
+            type: string
+        - name: fields
+          in: query
+          description: fields
+          required: false
+          schema:
+            type: string
+      post:
+        summary: Create a new IP
+        parameters:
+        - name: id
+          in: path
+          description: ID of saved search
+          required: true
+          schema:
+            type: string
+        - description: entry to modify
+          in: body
+          name: body
+          example: '{"id": "1.1.1.1", "impact": "30", "description": "some desc", "status": "bad", "label": "Mal IP"}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IP'
+                required:
+                  - type
+                  - description
+                  - impact
+                  - label
+          responses:
+            200:
+              description: hash entry modified
+      put:
+        summary: Modify an existing IP
+        parameters:
+        - name: id
+          in: path
+          description: ID of saved search
+          required: true
+          schema:
+            type: string
+        - description: entry to modify
+          in: body
+          name: body
+          example: '{"id": "1.1.1.1", "impact": "30", "description": "some desc", "status": "bad", "label": "Mal IP"}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IP'
+                required:
+                  - type
+                  - description
+                  - impact
+                  - label
+          responses:
+            200:
+              description: hash entry modified
+      patch:
+        summary: Modify an existing IP with partial data
+        parameters:
+        - name: id
+          in: path
+          description: ID of saved search
+          required: true
+          schema:
+            type: string
+        - description: entry to modify
+          in: body
+          name: body
+          example: '{"id": "1.1.1.1", "impact": "30", "description": "some desc", "status": "bad", "label": "Mal IP"}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IP'
+                required:
+                  - type
+                  - description
+                  - impact
+                  - label
+          responses:
+            200:
+              description: hash entry modified
+      delete:
+        summary: Delete and existing IP
+        parameters:
+        - name: id
+          in: path
+          description: ID of saved search
+          required: true
+          schema:
+            type: string
+        responses:
+          200:
+            description: IP entry removed
+    /api/v2/system:
+      get:
+        summary: Retrieve system config informtion
+        responses:
+          200:
+            description: config Retrieved
+    /api/v2/system/settings:
+      get:
+        summary: Retrieve system settings
+    /api/v2/system/status:
+      get:
+        summary: Retrieve system config informtion
+        responses:
+          200:
+            description: system status Retrieved
+    /api/v2/system/virus_total:
+      get:
+        summary: Retrieve VirusTotal setting
+        responses:
+          200:
+            description: config Received
+    /api/v2/system/dlp:
+      get:
+        summary: Retrieve DLP settings from the System
+        responses:
+          200:
+            description: Retrieved settings
+    /api/v2/tenants:
+      get:
+        summary: retrieve collection of tenants
+        parameters:
+        - name: fields
+          in: query
+          description: fields
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: limit
+          schema:
+            type: integer
+        responses:
+          200:
+            description: IP entries retrieved
+      post:
+        summary: Create new tenant
+        parameters:
+        - description: entry to add
+          in: body
+          name: body
+          example: '{"id": "tenant-id", "name": "some name", "description": "some desc"}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenant'
+                required:
+                  - id
+                  - name
+          responses:
+            200:
+                description: Tenant created
+    /api/v2/tenants/{id}:
+      get:
+        summary: Modify an existing IP with partial data
+        parameters:
+        - name: id
+          in: path
+          description: ID of saved search
+          required: true
+          schema:
+            type: string
+        - name: fields
+          in: query
+          description: fields
+          required: false
+          schema:
+            type: string
+        responses:
+          200:
+            description: Tenant info retrieved
+      put:
+        summary: Overwrite an existing Tenant
+        parameters:
+        - name: id
+          in: path
+          description: ID of saved search
+          required: true
+          schema:
+            type: string
+        - description: entry to modify
+          in: body
+          name: body
+          example: '{name": "some name", "description": "some desc"}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenants'
+                required:
+                  - name
+        responses:
+          200:
+            description: Tenant overwritten
+      patch:
+        summary: Modify an existing Tenant
+        parameters:
+        - name: id
+          in: path
+          description: ID of saved search
+          required: true
+          schema:
+            type: string
+        - description: entry to modify
+          in: body
+          name: body
+          example: '{name": "some name", "description": "some desc"}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tenants'
+                required:
+                  - name
+        responses:
+          200:
+            description: Tenant modified
+    /api/v2/users:
+      get:
+        summary: Retrieve collection of users
+        parameters:
+        - name: fields
+          in: query
+          description: fields
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: limit
+          required: false
+          schema:
+            type: integer
+        - name: searches
+          in: query
+          description: saved searches
+          required: false
+          schema:
+            type: string
+        responses:
+          200:
+            description: User info retrieved
+      post:
+        summary: Create new user
+        parameters:
+        - description: user to add
+          in: body
+          name: body
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+                required:
+                  - name
+        responses:
+          200:
+            description: User added
+    /api/v2/users/{id}:
+      get:
+        summary: Retrieve specific user
+        parameters:
+        - name: id
+          in: path
+          description: ID of saved search
+          required: true
+          schema:
+            type: string
+        - name: fields
+          in: query
+          description: fields
+          required: false
+          schema:
+            type: string
+        responses:
+          200:
+            description: User retrieved
+      put:
+        summary: Modify specific User
+        parameters:
+        - name: id
+          in: path
+          description: ID of user
+          required: true
+          schema:
+            type: string
+        - description: user to add
+          in: body
+          name: body
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+                required:
+                  - name
+        responses:
+          200:
+            description: User overwritten
+      patch:
+        summary: Modify specific User
+        parameters:
+        - name: id
+          in: path
+          description: ID of user
+          required: true
+          schema:
+            type: string
+        - description: user to add
+          in: body
+          name: body
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+                required:
+                  - name
+        responses:
+          200:
+            description: User modfied
+      delete:
+        summary: Remove specific User
+        parameters:
+        - name: id
+          in: path
+          description: ID of user
+          required: true
+          schema:
+            type: string
+        responses:
+          200:
+            description: User removed
+    /api/v2/users/{id}/tenants:
+      get:
+        summary: Retrieve list of tenants for a specified user
+        parameters:
+        - name: id
+          in: path
+          description: ID of user
+          required: true
+          schema:
+            type: string
+        responses:
+          200:
+            description: User tenants Received
+      put:
+        summary: Overwrite a list of tenants to a user
+        parameters:
+        - name: id
+          in: path
+          description: ID of user
+          required: true
+          schema:
+            type: string
+        - name: param1
+          in: body
+          required: true
+          description: tentants to assign
+          schema:
+              $ref: '#/components/schemas/Tags'
+        responses:
+          200:
+            description: Tenants applied to user
+      post:
+        summary: Add a list of tenants to a user
+        parameters:
+        - name: id
+          in: path
+          description: ID of user
+          required: true
+          schema:
+            type: string
+        - name: param1
+          in: body
+          required: true
+          description: tentants to assign
+          schema:
+              $ref: '#/components/schemas/Tags'
+        responses:
+          200:
+            description: Tenants applied to user
+      delete:
+        summary: Remove a list of tenants from a user
+        parameters:
+        - name: id
+          in: path
+          description: ID of user
+          required: true
+          schema:
+            type: string
+        - name: param1
+          in: body
+          required: true
+          description: tentants to remove
+          schema:
+              $ref: '#/components/schemas/Tags'
+        responses:
+          200:
+            description: Tenants removed from user
+    /api/v2/users/{id}/roles:
+      get:
+        summary: Retrieve list of roles for a user
+        parameters:
+        - name: id
+          in: path
+          description: ID of user
+          required: true
+          schema:
+            type: string
+        responses:
+          200:
+            description: Roles Received
+      put:
+        summary: Overwrite list of roles for a user
+        parameters:
+        - name: id
+          in: path
+          description: ID of user
+          required: true
+          schema:
+            type: string
+        - name: param1
+          in: body
+          required: true
+          description: roles to remove
+          schema:
+              $ref: '#/components/schemas/Tags'
+        responses:
+          200:
+            description: Roles overwritten
+      post:
+        summary: Modify list of roles for a user
+        parameters:
+        - name: id
+          in: path
+          description: ID of user
+          required: true
+          schema:
+            type: string
+        - name: param1
+          in: body
+          required: true
+          description: roles to remove
+          schema:
+              $ref: '#/components/schemas/Tags'
+        responses:
+          200:
+            description: Roles modified
+      delete:
+        summary: Remove roles from a user
+        parameters:
+        - name: id
+          in: path
+          description: ID of user
+          required: true
+          schema:
+            type: string
+        - name: param1
+          in: body
+          required: true
+          description: roles to remove
+          schema:
+              $ref: '#/components/schemas/Tags'
+        responses:
+          200:
+            description: Roles removed
+    /api/v2/account:
+      get:
+        summary: Get information about the authenticated user
+        responses:
+          200:
+            description: Account info Received
