@@ -1,12 +1,12 @@
+openapi: 3.0.2
 info:
+  title: GoSecure EDR
+  description: 'GoSecure EDR API generated from the GoSecure EDR API Doc'
+  version: 1.0.0
   contact:
     email: towen@gosecure.net
     name: '@owentl'
     url: 'https://medium.com/@owentl'
-  description: 'GoSecure EDR API generated from the GoSecure EDR API Document'
-  title: GoSecure EDR
-  version: 1.0.0
-openapi: 3.0.2
 servers:
   - url: ""
 components:
