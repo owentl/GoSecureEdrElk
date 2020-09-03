@@ -115,6 +115,9 @@ components:
       in: header
       name: Authorization
       type: apikey
+    BasicAuth:
+      type: http
+      scheme: basic
 paths:
   /api/v2/behaviors:
     get:
