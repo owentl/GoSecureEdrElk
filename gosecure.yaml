@@ -264,11 +264,11 @@ paths:
         required: true
         description: tags to set on endpoint
         schema:
-            $ref: '#/components/schemas/Tags'
-        - description: id of the behavior
-          in: path
-          name: id
-          required: true
+          $ref: '#/components/schemas/Tags'
+      - description: id of the behavior
+        in: path
+        name: id
+        required: true
           schema:
             type: string
       responses:
@@ -283,12 +283,12 @@ paths:
         description: tags to set on endpoint
         schema:
             $ref: '#/components/schemas/Tags'
-        - description: id of the behavior
-          in: path
-          name: id
-          required: true
-          schema:
-            type: string
+      - description: id of the behavior
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
     delete:
       summary: Remove tags from behaviors on an endpoint
       parameters:
@@ -514,6 +514,7 @@ paths:
           description: Files Retrieved
     delete:
       summary: Delete a file off an endpoint
+      parameters:
       - name: id
         in: path
         description: ID of file to delete
@@ -1571,6 +1572,7 @@ paths:
               description: hash entry modified
       delete:
         summary: Delete an existing hash
+        parameters:
         - name: id
           in: path
           description: ID of saved search
