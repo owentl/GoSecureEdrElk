@@ -292,6 +292,9 @@ paths:
           required: true
           schema:
             type: string
+      responses:
+        200:
+          description: Set tags
     delete:
       summary: Remove tags from behaviors on an endpoint
       parameters:
@@ -307,6 +310,9 @@ paths:
           required: true
           schema:
             type: string
+      responses:
+        200:
+          description: Removed tags
   /api/v2/endpoints:
     get:
       summary: Get list of endpoints
@@ -395,6 +401,9 @@ paths:
                 required:
                   - type
                   - paths
+        responses:
+          200:
+            description: Set commands
   /api/v2/endpoints/{id}/commands:
     get:
       summary: Get commands for an endpoint
@@ -688,12 +697,6 @@ paths:
     get:
       summary: Receive events based on criteria
       parameters:
-        - name: id
-          in: path
-          description: ID of event to use
-          required: false
-          schema:
-            type: string
         - name: expression
           in: query
           description: expression
@@ -725,6 +728,8 @@ paths:
           in: path
           description: ID of event
           required: true
+          schema:
+            type: string
         - name: fields
           description: fields
           in: query
@@ -791,23 +796,23 @@ paths:
         200:
           description: replace tag
     delete:
-    summary: Delete tags for a collection of events
-    parameters:
-      - name: expression
-        description: 'A CQL search expression that filters on events'
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: param1
-        in: body
-        required: true
-        description: tags to set on endpoint
-        schema:
-          $ref: '#/components/schemas/Tags'
-    responses:
-      200:
-        description: Remove tag
+      summary: Delete tags for a collection of events
+      parameters:
+        - name: expression
+          description: 'A CQL search expression that filters on events'
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: param1
+          in: body
+          required: true
+          description: tags to set on endpoint
+          schema:
+            $ref: '#/components/schemas/Tags'
+      responses:
+        200:
+          description: Remove tag
   /api/v2/events/{id}/tags:
     get:
       summary: Get the tags for an event
@@ -875,66 +880,66 @@ paths:
       responses:
         200:
           description: Remove tag
-    /api/v2/groups:
-      get:
-        summary: Retrieve Groups
-        parameters:
-          - name: expression
-            in: query
-            description: expression
-            required: false
-            schema:
-              type: string
-          - name: fields
-            in: query
-            description: fields
-            required: false
-            schema:
-              type: string
-          - name: limit
-            in: query
-            description: limit
-            schema:
-              type: integer
-          - name: depth
-            in: query
-            description: Number of levels that will be included in the response
-            schema:
-              type: integer
-        responses:
-          200:
-            description: Get the events
-      post:
-        summary: Create new group
-        parameters:
-          - description: Command and path
-            in: body
-            name: body
-            example: '{"type": "manual", "name": "My group name"}'
-            required: true
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Groups'
-                  required:
-                    - name
-                    - type
-                    - expression
-        responses:
-          200:
-            description: Group created
-      delete:
-        summary: Remove groups
-        parameters:
-          - name: expression
-            in: query
-            description: expression
-            required: false
-            schema:
-              type: string
-        responses:
-          200:
-            description: Group removed
+  /api/v2/groups:
+    get:
+      summary: Retrieve Groups
+      parameters:
+        - name: expression
+          in: query
+          description: expression
+          required: false
+          schema:
+            type: string
+        - name: fields
+          in: query
+          description: fields
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: limit
+          schema:
+            type: integer
+        - name: depth
+          in: query
+          description: Number of levels that will be included in the response
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Get the events
+    post:
+      summary: Create new group
+      parameters:
+        - description: Command and path
+          in: body
+          name: body
+          example: '{"type": "manual", "name": "My group name"}'
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Groups'
+                required:
+                  - name
+                  - type
+                  - expression
+      responses:
+        200:
+          description: Group created
+    delete:
+      summary: Remove groups
+      parameters:
+        - name: expression
+          in: query
+          description: expression
+          required: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: Group removed
     /api/v2/groups/{id}:
       get:
         summary: Retrieve specific group
