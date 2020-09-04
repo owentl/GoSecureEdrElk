@@ -9,6 +9,10 @@ info:
     url: 'https://medium.com/@owentl'
 servers:
   - url: ""
+    port:
+      enum:
+        - '9090'
+      default: '8443'
 components:
   schemas:
     Commands:
