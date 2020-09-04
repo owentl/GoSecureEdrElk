@@ -405,9 +405,9 @@ paths:
                 required:
                   - type
                   - paths
-        responses:
-          200:
-            description: Set commands
+      responses:
+        200:
+          description: Set commands
   /api/v2/endpoints/{id}/commands:
     get:
       summary: Get commands for an endpoint
