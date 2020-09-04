@@ -742,7 +742,7 @@ paths:
             type: string
   /api/v2/events/tags:
     get:
-      description: Get the tags sent to events
+      summary: Get the tags sent to events
       parameters:
         - name: expression
           description: 'A CQL search expression that filters on events'
