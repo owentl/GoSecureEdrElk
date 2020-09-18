@@ -12,7 +12,7 @@ servers:
     port:
       enum:
         - '9090'
-      default: '8443'
+      default: '9090'
 components:
   schemas:
     Commands:
