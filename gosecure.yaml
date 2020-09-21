@@ -17,10 +17,6 @@ servers:
         enum:
           - '9090'
         default: '9090
-    port:
-      enum:
-        - '9090'
-      default: '9090'
 components:
   schemas:
     Commands:
