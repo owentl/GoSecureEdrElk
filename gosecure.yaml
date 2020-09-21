@@ -8,7 +8,15 @@ info:
     name: '@owentl'
     url: 'https://medium.com/@owentl'
 servers:
-  - url: ""
+  - url: "https://{edrServer}:{port}/"
+    variables:
+      edrServer:
+        default: demo
+        description: this is the IP of your EDR primary cluster node
+      port:
+        enum:
+          - '9090'
+        default: '9090
     port:
       enum:
         - '9090'
